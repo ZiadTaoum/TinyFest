@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             ThemeSeeder::class,
             GallerySeeder::class,
             TestimonialSeeder::class,
+            PackageSeeder::class,
+            AddonSeeder::class,
         ]);
     }
 

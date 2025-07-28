@@ -1,48 +1,95 @@
 import 'package:flutter/material.dart';
-import 'screens/bookings/booking_form_screen.dart';
-import 'screens/themes/themes_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/events_screen.dart';
+import 'screens/portfolio_screen.dart';
+import 'screens/account_screen.dart';
+import 'screens/booking/booking_wizard_screen.dart'; // 🔹 Add this for the booking flow
 
 void main() {
   runApp(TinyFestsApp());
 }
 
 class TinyFestsApp extends StatelessWidget {
-  const TinyFestsApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tiny Fests',
-      theme: ThemeData(primarySwatch: Colors.pink),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        fontFamily: 'Poppins',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFFFF6B9D),
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(), // temporary home
-        '/book': (context) =>  BookingFormScreen(),
-        '/themes': (context) =>  ThemesScreen(),
+        '/': (context) => MainScreen(),
+        '/booking': (context) => BookingWizardScreen(), // 👈 Booking Wizard
+        // You can add other routes here too
       },
     );
   }
 }
 
-// Just a sample home screen for navigation
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _screens = [
+    HomeScreen(),        // Includes navigation to booking
+    EventsScreen(),      // List from backend
+    PortfolioScreen(),   // Gallery data
+    AccountScreen(),     // User + favorites
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Tiny Fests Home')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              child: Text('Book a Party'),
-              onPressed: () => Navigator.pushNamed(context, '/book'),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFFF6B9D), Color(0xFFFFD93D)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (index) => setState(() => _currentIndex = index),
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white70,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
             ),
-            ElevatedButton(
-              child: Text('View Themes'),
-              onPressed: () => Navigator.pushNamed(context, '/themes'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.event),
+              label: 'Events',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_library),
+              label: 'Portfolio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Account',
             ),
           ],
         ),

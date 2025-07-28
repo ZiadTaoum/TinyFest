@@ -9,12 +9,10 @@ class ThemeSeeder extends Seeder
 {
     public function run(): void
     {
-        Theme::create([
-            'name' => 'Unicorn Dream',
-            'category' => 'Fantasy',
-            'description' => 'A magical pastel unicorn party.',
-            'image' => null,
-            'is_active' => true,
+        Theme::insert([
+            ['name' => 'Unicorn World', 'image' => 'themes/unicorn.jpg'],
+            ['name' => 'Space Adventure', 'image' => 'themes/space.jpg'],
+            ['name' => 'Jungle Safari', 'image' => 'themes/jungle.jpg'],
         ]);
     }
 }

@@ -13,19 +13,27 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
+
             $table->string('child_name');
             $table->date('birthday_date');
+
             $table->string('location');
-            $table->string('theme');
-            $table->string('package'); // Basic / Premium / Custom
-            $table->json('addons')->nullable(); // e.g. ["drone", "foam"]
+
+            $table->string('theme'); // e.g. "Space Party", "Unicorn World"
+            $table->string('package'); // e.g. "Basic", "Premium", "Custom"
+
+            $table->json('addons')->nullable(); // e.g. ["Drone Show", "Foam Party"]
+
             $table->enum('payment_status', ['pending', 'paid'])->default('pending');
-            $table->decimal('total_price', 10, 2)->default(0);
+
+            $table->decimal('total_price', 10, 2)->default(0.00);
+
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             $table->timestamps();
         });
-
     }
+
 
     /**
      * Reverse the migrations.

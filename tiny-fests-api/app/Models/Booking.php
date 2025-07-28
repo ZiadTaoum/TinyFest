@@ -10,16 +10,35 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'child_name', 'birthday_date', 'location', 'theme',
-        'package', 'addons', 'payment_status', 'total_price', 'user_id',
+        'child_name',
+        'birthday_date',
+        'location',
+        'theme_id',        // Updated from 'theme'
+        'package_id',      // Updated from 'package'
+        'payment_status',
+        'total_price',
+        'user_id',
     ];
 
     protected $casts = [
-        'addons' => 'array',
         'birthday_date' => 'date',
+        'total_price' => 'decimal:2',
     ];
 
+    // Define relationships
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function theme() {
+        return $this->belongsTo(Theme::class);
+    }
+
+    public function package() {
+        return $this->belongsTo(Package::class);
+    }
+
+    public function addons() {
+        return $this->belongsToMany(Addon::class, 'booking_addon');
     }
 }
